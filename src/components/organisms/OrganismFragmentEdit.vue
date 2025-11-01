@@ -160,13 +160,7 @@ onMounted(async () => {
               :prepend-icon="mdiFileImage"
               @change="handlePictureUpload"
             />
-            <v-img
-              :src="form.picture"
-              alt="Fragment picture"
-              max-width="50%"
-              width="0"
-              height="0"
-            />
+            <v-img :src="form.picture" alt="Fragment picture" max-width="50%" />
           </v-col>
           <v-col cols="12" md="6">
             <AtomTextField
@@ -179,16 +173,12 @@ onMounted(async () => {
               :model-value="form.molecularMass"
               @update:modelValue="(val: number) => handleUpdate('molecularMass', val)"
             />
-            <!-- <AtomTextField
-              label="Canonical SMILES"
-              :model-value="form.canonicalSmiles"
-              @update:modelValue="(val: any) => handleUpdate('canonicalSmiles', val)"
-            /> -->
             <v-autocomplete
               v-model="form.compounds"
               :items="allCompounds"
               label="Compounds"
               item-title="abbr"
+              item-value="id"
               chips
               closable-chips
               multiple

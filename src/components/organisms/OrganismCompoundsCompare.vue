@@ -5,6 +5,7 @@ import { ref, computed, onMounted } from 'vue';
 // Components
 import OrganismCompoundMassSpectraSection from '@/components/organisms/OrganismCompoundMassSpectraSection.vue';
 import AtomChip from '@/components/atoms/AtomChip.vue';
+import AtomSnackbar from '@/components/atoms/AtomSnackbar.vue';
 
 // Intrefaces
 import type { CompoundCompare } from '@/interfaces/CompoundCompare';
@@ -22,30 +23,34 @@ const massSpectras = ref<MassTable[][]>([]);
 const loading = ref(true);
 const error = ref<string | null>(null);
 
+const showSnackbar = ref(false);
+const snackbarMessage = ref('');
+
 // Methods
+const showAlert = (msg: string) => {
+  snackbarMessage.value = msg;
+  showSnackbar.value = true;
+};
+
 const calculateMatchFactor = (spectrumA: MassTable[], spectrumB: MassTable[]): number => {
   if (!spectrumA.length || !spectrumB.length) return 0;
 
-  // 1️⃣ Нормализация интенсивностей к 100
   const maxA = Math.max(...spectrumA.map((p) => p.intensity));
   const maxB = Math.max(...spectrumB.map((p) => p.intensity));
   const normA = spectrumA.map((p) => ({ mz: p.mz, intensity: (p.intensity / maxA) * 100 }));
   const normB = spectrumB.map((p) => ({ mz: p.mz, intensity: (p.intensity / maxB) * 100 }));
 
-  // 2️⃣ Создание списка всех уникальных m/z
   const mzSet = new Set<number>([...normA.map((p) => p.mz), ...normB.map((p) => p.mz)]);
   const mzValues = Array.from(mzSet).sort((a, b) => a - b);
 
-  // 3️⃣ Формируем векторы интенсивностей
   const aVec = mzValues.map((mz) => normA.find((p) => p.mz === mz)?.intensity ?? 0);
   const bVec = mzValues.map((mz) => normB.find((p) => p.mz === mz)?.intensity ?? 0);
 
-  // 4️⃣ Вычисляем взвешенное скалярное произведение (dot product)
   let dot = 0,
     normA2 = 0,
     normB2 = 0;
   for (let i = 0; i < mzValues.length; i++) {
-    const w = Math.pow(mzValues[i], 2); // вес (m/z)^2
+    const w = Math.pow(mzValues[i], 2);
     dot += w * aVec[i] * bVec[i];
     normA2 += w * Math.pow(aVec[i], 2);
     normB2 += w * Math.pow(bVec[i], 2);
@@ -53,25 +58,25 @@ const calculateMatchFactor = (spectrumA: MassTable[], spectrumB: MassTable[]): n
 
   if (normA2 === 0 || normB2 === 0) return 0;
 
-  // 5️⃣ Косинусное сходство
-  const similarity = dot / Math.sqrt(normA2 * normB2);
+  const matchFactor = Math.round(999 * Math.pow(dot / Math.sqrt(normA2 * normB2), 3));
 
-  // 6️⃣ Преобразование в диапазон 0–999
-  const matchFactor = Math.round(999 * Math.pow(similarity, 3));
   return Math.min(Math.max(matchFactor, 0), 999);
 };
 
 const matchFactor = computed(() => {
-  if (massSpectras.value.length === 2) {
+  if (massSpectras.value.length === 2)
     return calculateMatchFactor(massSpectras.value[0], massSpectras.value[1]);
-  }
+
   return null;
 });
 
 // Hoox
 onMounted(async () => {
   try {
-    if (!props.compoundIds) throw new Error('No ids provided');
+    if (!props.compoundIds) {
+      showAlert(`Error: No ids provided`);
+      throw new Error('No ids provided');
+    }
 
     const ids = props.compoundIds.split(',').map((id) => parseInt(id));
     const res = await fetch('/api/compound/compare', {
@@ -80,7 +85,10 @@ onMounted(async () => {
       body: JSON.stringify({ ids }),
     });
 
-    if (!res.ok) throw new Error(`Error ${res.status}`);
+    if (!res.ok) {
+      showAlert(`Error: ${res.status}`);
+      throw new Error(`Error: ${res.status}`);
+    }
 
     compounds.value = await res.json();
     compounds.value.forEach((c) => {
@@ -97,6 +105,13 @@ onMounted(async () => {
 <template>
   <v-main>
     <v-container>
+      <AtomSnackbar
+        v-model="showSnackbar"
+        :message="snackbarMessage"
+        color="error"
+        :timeout="5000"
+      />
+
       <div class="mb-4 d-flex justify-space-between align-center">
         <div class="d-flex align-center">
           <AtomChip class="pa-0" variant="text" size="x-large">

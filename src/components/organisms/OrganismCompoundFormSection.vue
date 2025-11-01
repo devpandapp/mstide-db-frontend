@@ -1,6 +1,6 @@
 <script setup lang="ts">
 // Core
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 // Modules
 import { mdiFileUpload, mdiFileImage, mdiFileChart, mdiDownload } from '@mdi/js';
@@ -30,7 +30,7 @@ const emit = defineEmits<{
 }>();
 
 // Data
-const treeItems = ref<any[]>([]);
+const allTypes = ref<CompoundType[]>([]);
 const availableFragments = ref<Fragment[]>([]);
 const ATOMIC_MASSES: Record<string, number> = {
   H: 1.008,
@@ -156,28 +156,40 @@ const ATOMIC_MASSES: Record<string, number> = {
 const showSnackbar = ref(false);
 const snackbarMessage = ref('');
 
+// Computed
+const groupedTypes = computed(() => {
+  if (!allTypes.value.length) return [];
+
+  const groups = new Map<string, CompoundType[]>();
+
+  for (const t of allTypes.value) {
+    const groupName = t.group?.name || 'Other';
+    if (!groups.has(groupName)) groups.set(groupName, []);
+    groups.get(groupName)!.push(t);
+  }
+
+  const result: any[] = [];
+  const entries = Array.from(groups.entries());
+
+  entries.forEach(([groupName, types], index) => {
+    result.push({ type: 'subheader', name: groupName });
+    result.push(
+      ...types.map((t) => ({
+        id: t.id,
+        name: t.name,
+        group: t.group,
+      }))
+    );
+    if (index < entries.length - 1) result.push({ type: 'divider' });
+  });
+
+  return result;
+});
+
 // Methods
 const showAlert = (msg: string) => {
   snackbarMessage.value = msg;
   showSnackbar.value = true;
-};
-
-const buildTree = (types: CompoundType[]) => {
-  const grouped: Record<number, any> = {};
-  types.forEach((t) => {
-    if (!t.group) return;
-    if (!grouped[t.group.id]) {
-      grouped[t.group.id] = {
-        id: `group-${t.group.id}`,
-        code: t.group.code,
-        name: t.group.name,
-        children: [],
-      };
-    }
-    grouped[t.group.id].children.push({ id: t.id, name: t.name });
-  });
-
-  return Object.values(grouped);
 };
 
 const handleUpdate = (key: keyof Compound, value: string) => {
@@ -231,7 +243,7 @@ const handleFragmentsUpdate = (value: Fragment[]) => {
   emit('update:form', { ...props.form, fragments: value });
 };
 
-const handleTypesUpdate = (value: number[]) => {
+const handleTypesUpdate = (value: CompoundType[]) => {
   emit('update:form', { ...props.form, types: value });
 };
 
@@ -244,8 +256,7 @@ onMounted(async () => {
 
   const typeRes = await fetch('/api/compound/types');
   if (typeRes.ok) {
-    const allTypes = (await typeRes.json()) as CompoundType[];
-    treeItems.value = buildTree(allTypes);
+    allTypes.value = await typeRes.json();
   }
 });
 </script>
@@ -310,6 +321,7 @@ onMounted(async () => {
         :items="availableFragments"
         label="Fragments"
         item-title="name"
+        item-value="id"
         chips
         closable-chips
         multiple
@@ -360,7 +372,7 @@ onMounted(async () => {
         color="secondary"
         :prepend-icon="mdiDownload"
         :href="form.sdf"
-        :download="`compound_${form.id}.sdf`"
+        :download="`comp_${form.abbr}.sdf`"
       >
         Download SDF file
       </AtomButton>
@@ -374,22 +386,37 @@ onMounted(async () => {
       <div class="compound-picture">
         <v-img :src="form.picture" alt="Compound picture" />
       </div>
-      <AtomChip class="pl-0" variant="text" size="x-large">
-        <strong>Types:</strong>
-      </AtomChip>
-      <v-treeview
-        v-model:selected="props.form.types"
-        :items="treeItems"
-        selectable
-        multiple
-        open-on-click
-        selected-color="info"
-        color="info"
+
+      <v-autocomplete
+        v-model="props.form.types"
+        :items="groupedTypes"
+        label="Types"
         item-title="name"
         item-value="id"
-        select-strategy="classic"
+        return-object
+        multiple
+        chips
+        closable-chips
+        clearable
+        density="comfortable"
+        variant="outlined"
+        hide-details="auto"
+        item-color="info"
         @update:modelValue="handleTypesUpdate"
-      />
+      >
+        <template v-slot:chip="{ props, item }">
+          <v-chip v-bind="props" color="info" variant="outlined">
+            <strong>
+              {{ item.raw.name }}
+            </strong>
+          </v-chip>
+        </template>
+        <template v-slot:subheader="{ props }">
+          <v-list-subheader>
+            <strong>{{ props.name }}</strong>
+          </v-list-subheader>
+        </template>
+      </v-autocomplete>
     </v-col>
   </v-row>
   <v-row>
@@ -418,7 +445,7 @@ onMounted(async () => {
     .compound-picture {
       display: flex;
       justify-content: center;
-      padding-bottom: 20px;
+      padding-bottom: 40px;
     }
   }
 }

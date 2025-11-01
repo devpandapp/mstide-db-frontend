@@ -4,7 +4,7 @@ import { ref, reactive, onMounted } from 'vue';
 
 // Modules
 import { useRouter } from 'vue-router';
-import { mdiPencil, mdiCircleSmall, mdiAlert, mdiTrashCan } from '@mdi/js';
+import { mdiPencil, mdiAlert, mdiTrashCan } from '@mdi/js';
 
 // Components
 import { appState } from '@/db/auth.ts';

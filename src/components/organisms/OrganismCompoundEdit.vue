@@ -8,7 +8,6 @@ import { mdiContentSave, mdiClose } from '@mdi/js';
 
 // Interfaces
 import type { Compound } from '@/interfaces/Compound';
-import type { CompoundType } from '@/interfaces/CompoundType';
 import type { MassTable } from '@/interfaces/MassTable';
 import type { Fragment } from '@/interfaces/Fragment';
 
@@ -18,6 +17,7 @@ import OrganismCompoundFormSection from '@/components/organisms/OrganismCompound
 import OrganismCompoundMassSpectraSection from '@/components/organisms/OrganismCompoundMassSpectraSection.vue';
 import AtomChip from '@/components/atoms/AtomChip.vue';
 import AtomButton from '@/components/atoms/AtomButton.vue';
+import AtomSnackbar from '@/components/atoms/AtomSnackbar.vue';
 
 // Props
 const props = defineProps<{

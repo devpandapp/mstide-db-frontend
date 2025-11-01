@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Components
 import OrganismHeader from '@/components/organisms/OrganismHeader.vue';
-import OrganismAbout from '../organisms/OrganismAbout.vue';
+import OrganismAbout from '@/components/organisms/OrganismAbout.vue';
 </script>
 
 <template>

@@ -58,7 +58,6 @@ const showAlert = (msg: string) => {
 };
 
 const loadFragments = async () => {
-  console.log(111);
   loading.value = true;
   error.value = null;
   try {
@@ -271,7 +270,6 @@ onMounted(async () => {
                         {{ item.raw.name }}
                       </h3>
                     </v-list-item-title>
-                    <!-- <v-list-item-subtitle>{{ item.raw.molecularMass }}</v-list-item-subtitle> -->
                   </v-list-item>
                 </v-list>
                 <v-img :src="item.raw.picture" alt="Fragment picture" height="200" />

@@ -32,8 +32,6 @@ app.mixin({
     },
   },
 });
-// const display = useDisplay();
-// app.config.globalProperties.$display = display;
 
 app.use(VueAxios, axios);
 app.use(router);

@@ -267,7 +267,7 @@ onMounted(async () => {
                 color="secondary"
                 :prepend-icon="mdiDownload"
                 :href="form.sdf"
-                :download="`compound_${form.id}.sdf`"
+                :download="`comp_${form.abbr}.sdf`"
               >
                 Download SDF file
               </AtomButton>

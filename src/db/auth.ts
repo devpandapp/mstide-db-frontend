@@ -52,7 +52,8 @@ export const signIn = async () => {
 
     await checkSession();
   } catch {
-    console.error('Invalid login or password');
+    alert('Invalid login or password');
+    throw new Error('Invalid login or password');
   }
 };
 

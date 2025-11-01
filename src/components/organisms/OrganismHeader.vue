@@ -29,7 +29,7 @@ const links = [
 // Methods
 const toggleTheme = () => {
   const newTheme = theme.global.current.value.dark ? 'light' : 'dark';
-  theme.global.name.value = newTheme;
+  theme.change(newTheme);
   localStorage.setItem('theme', newTheme);
 };
 
