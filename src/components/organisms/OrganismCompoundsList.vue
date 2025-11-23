@@ -447,7 +447,27 @@ onMounted(async () => {
         <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
           <v-footer class="justify-space-between mt-4" color="secondary" rounded>
             <v-chip variant="text" size="x-large">Found: {{ compounds.length }}</v-chip>
-            <div>
+            <v-chip variant="text" size="x-large">Page {{ page }} of {{ pageCount }}</v-chip>
+            <div v-if="$display.xs || $display.sm" class="d-flex align-center gap-2">
+              <AtomButton
+                class="mr-1"
+                :disabled="page === 1"
+                :icon="mdiArrowLeft"
+                rounded=""
+                color="secondary"
+                size="default"
+                @click="prevPage"
+              />
+              <AtomButton
+                :disabled="page === pageCount"
+                :icon="mdiArrowRight"
+                rounded=""
+                color="secondary"
+                size="default"
+                @click="nextPage"
+              />
+            </div>
+            <div v-else>
               <AtomButton
                 class="mr-1"
                 :disabled="page === 1"
@@ -463,7 +483,6 @@ onMounted(async () => {
                 size="large"
                 @click="nextPage"
               />
-              <v-chip variant="text" size="x-large">Page {{ page }} of {{ pageCount }}</v-chip>
             </div>
           </v-footer>
         </template>
