@@ -6,9 +6,9 @@
       <p class="mt-4 mb-6 text-body-1">
         The MSTIDE Database 2.0 is an extension of a previously developed resource from our
         laboratory, which contains data on more than 150 mononucleotides (<a
-          href="https://www.mstide-db2.com"
+          href="http://www.mstide-db.com/"
           target="_blank"
-          >mstide-db2.com</a
+          >mstide-db.com</a
         >). It serves as a repository of negative-ion mode tandem mass spectrometry data for di- and
         trinucleotides, encompassing variations in nucleobase composition, oligophosphate chain
         length (from mono- to pentaphosphate), and additional modifications on the phosphate,

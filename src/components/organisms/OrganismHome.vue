@@ -29,10 +29,11 @@ const features = [
         <h1 class="mt-2">MSTIDE Database 2.0</h1>
 
         <p class="mt-4 text-body-1 text-medium-emphasis">
-          This is a repository of negative-ion mode tandem mass spectrometry data of natural
-          nucleotides and their synthetic derivatives. The compounds include nucleoside mono-, di-
-          and tri- phosphates, nucleotide sugars, nucleoside phosphosulfates and their counterparts
-          bearing modifications within the (oligo)phosphate, ribose or nucleobase...
+          The database covers more than 60 nucleotide compounds, each accompanied by corresponding
+          doubly charged MS/MS spectra. For every entry, users can access the parent ion’s chemical
+          structure, IUPAC name and abbreviation, detailed measurement conditions, the recorded
+          MS/MS spectrum, a numerical list of detected peaks with normalized intensities, and a set
+          of proposed chemical structures for identified fragment ions...
         </p>
 
         <p class="mt-4">
