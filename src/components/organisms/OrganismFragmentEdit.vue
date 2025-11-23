@@ -160,7 +160,7 @@ onMounted(async () => {
               :prepend-icon="mdiFileImage"
               @change="handlePictureUpload"
             />
-            <v-img :src="form.picture" alt="Fragment picture" max-width="50%" />
+            <v-img :src="form.picture" alt="Fragment picture" height="200" />
           </v-col>
           <v-col cols="12" md="6">
             <AtomTextField

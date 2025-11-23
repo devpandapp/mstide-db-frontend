@@ -130,7 +130,7 @@ onMounted(async () => {
         </div>
         <div class="d-flex justify-center align-center mx-auto">
           <span v-if="matchFactor !== null">
-            <strong><i>Match Factor (NIST-like) = </i></strong>
+            <strong><i>Match Factor = </i></strong>
             {{ matchFactor }}
           </span>
         </div>
@@ -157,7 +157,7 @@ onMounted(async () => {
           <v-col cols="12" md="6">
             <p>
               <AtomChip variant="text" size="x-large">
-                <strong>Abbr:</strong>
+                <strong>Abbreviation:</strong>
               </AtomChip>
               <AtomChip class="mx-2" :color="colors[index]" :label="true">
                 <strong>{{ compound.abbr }}</strong>

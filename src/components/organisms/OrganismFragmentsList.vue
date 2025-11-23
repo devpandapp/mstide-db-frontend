@@ -272,7 +272,7 @@ onMounted(async () => {
                     </v-list-item-title>
                   </v-list-item>
                 </v-list>
-                <v-img :src="item.raw.picture" alt="Fragment picture" height="200" />
+                <v-img :src="item.raw.picture" alt="Fragment picture" height="130px" />
                 <v-list lines="two" density="compact">
                   <v-list-item>
                     <v-list-item-title>{{ item.raw.molecularMass || '-' }}</v-list-item-title>
@@ -284,11 +284,45 @@ onMounted(async () => {
           </v-row>
         </template>
 
-        <template v-slot:footer="{ page, pageCount }">
-          <v-footer class="justify-space-between mt-4" color="secondary" rounded>
+        <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+          <v-footer class="d-flex justify-space-between mt-4" color="secondary" rounded>
             <v-chip variant="text" size="x-large">Found: {{ fragments.length }}</v-chip>
-            <div>
-              <v-chip variant="text" size="x-large">Page {{ page }} of {{ pageCount }}</v-chip>
+            <v-chip variant="text" size="x-large">Page {{ page }} of {{ pageCount }}</v-chip>
+            <div v-if="$display.xs || $display.sm" class="d-flex align-center gap-2">
+              <AtomButton
+                class="mr-1"
+                :disabled="page === 1"
+                :icon="mdiArrowLeft"
+                rounded=""
+                color="secondary"
+                size="default"
+                @click="prevPage"
+              />
+              <AtomButton
+                :disabled="page === pageCount"
+                :icon="mdiArrowRight"
+                rounded=""
+                color="secondary"
+                size="default"
+                @click="nextPage"
+              />
+            </div>
+            <div v-else>
+              <AtomButton
+                class="mr-1"
+                :disabled="page === 1"
+                :prepend-icon="mdiArrowLeft"
+                color="secondary"
+                size="large"
+                @click="prevPage"
+              />
+              <AtomButton
+                :disabled="page === pageCount"
+                :prepend-icon="mdiArrowRight"
+                color="secondary"
+                size="large"
+                @click="nextPage"
+              />
             </div>
           </v-footer>
         </template>

@@ -155,7 +155,7 @@ onMounted(async () => {
           <AtomChip class="pa-0" variant="text" size="x-large">
             <strong>View Compound</strong>
           </AtomChip>
-          <AtomChip class="mx-2" color="primary" size="x-large" :label="true">
+          <AtomChip class="mx-2 h-auto text-pre-wrap" color="primary" size="x-large" :label="true">
             <strong>{{ form.abbr }} ({{ form.name }})</strong>
           </AtomChip>
           <AtomButton
@@ -181,7 +181,7 @@ onMounted(async () => {
           <v-col cols="12" md="6">
             <p>
               <AtomChip variant="text" size="x-large">
-                <strong>Abbr:</strong>
+                <strong>Abbreviation:</strong>
               </AtomChip>
               <AtomChip class="mx-2" color="info" :label="true">
                 <strong>{{ form.abbr }}</strong>
@@ -215,7 +215,12 @@ onMounted(async () => {
               <AtomChip variant="text" size="x-large">
                 <strong>Canonical SMILES:</strong>
               </AtomChip>
-              <AtomChip class="mx-2" color="info" :label="true">
+              <AtomChip
+                class="mx-2 h-auto text-pre-wrap"
+                color="info"
+                :label="true"
+                :title="form.canonicalSmiles"
+              >
                 <strong>{{ form.canonicalSmiles }}</strong>
               </AtomChip>
             </p>

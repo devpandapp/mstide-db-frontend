@@ -425,7 +425,9 @@ onMounted(async () => {
                     <v-list-item-subtitle>Id</v-list-item-subtitle>
                   </v-list-item>
                   <v-list-item>
-                    <v-list-item-title>{{ item.raw.canonicalSmiles || '-' }}</v-list-item-title>
+                    <v-list-item-title :title="item.raw.canonicalSmiles">
+                      {{ item.raw.canonicalSmiles || '-' }}
+                    </v-list-item-title>
                     <v-list-item-subtitle>Canonical SMILES</v-list-item-subtitle>
                   </v-list-item>
                   <v-list-item>
@@ -442,10 +444,25 @@ onMounted(async () => {
           </v-row>
         </template>
 
-        <template v-slot:footer="{ page, pageCount }">
+        <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
           <v-footer class="justify-space-between mt-4" color="secondary" rounded>
             <v-chip variant="text" size="x-large">Found: {{ compounds.length }}</v-chip>
             <div>
+              <AtomButton
+                class="mr-1"
+                :disabled="page === 1"
+                :prepend-icon="mdiArrowLeft"
+                color="secondary"
+                size="large"
+                @click="prevPage"
+              />
+              <AtomButton
+                :disabled="page === pageCount"
+                :prepend-icon="mdiArrowRight"
+                color="secondary"
+                size="large"
+                @click="nextPage"
+              />
               <v-chip variant="text" size="x-large">Page {{ page }} of {{ pageCount }}</v-chip>
             </div>
           </v-footer>
