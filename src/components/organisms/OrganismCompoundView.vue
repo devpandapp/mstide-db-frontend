@@ -155,7 +155,12 @@ onMounted(async () => {
           <AtomChip class="pa-0" variant="text" size="x-large">
             <strong>View Compound</strong>
           </AtomChip>
-          <AtomChip class="mx-2 h-auto text-pre-wrap" color="primary" size="x-large" :label="true">
+          <AtomChip
+            class="mx-2 h-auto text-pre-wrap"
+            :color="form.molecularFormula?.endsWith(')2-') ? 'deep-purple' : 'blue-darken-3'"
+            size="x-large"
+            :label="true"
+          >
             <strong>{{ form.abbr }} ({{ form.name }})</strong>
           </AtomChip>
           <AtomButton

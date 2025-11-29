@@ -3,7 +3,13 @@
 import { ref, shallowRef, reactive, watch, onMounted } from 'vue';
 
 // Modules
-import { mdiSelectCompare, mdiArrowLeft, mdiArrowRight, mdiTuneVariant } from '@mdi/js';
+import {
+  mdiSelectCompare,
+  mdiArrowLeft,
+  mdiArrowRight,
+  mdiTuneVariant,
+  mdiInformationOutline,
+} from '@mdi/js';
 
 // Components
 import { appState } from '@/db/auth.ts';
@@ -151,10 +157,35 @@ onMounted(async () => {
       />
       <div class="mb-4 d-flex align-center">
         <AtomChip class="pl-0" variant="text" size="x-large">
-          <strong>Compounds List</strong>
+          <strong class="mr-1">Compounds List</strong>
+          <v-tooltip
+            v-if="$display.xs || $display.sm"
+            interactive
+            open-on-click
+            class="charges-tooltip"
+          >
+            <template v-slot:activator="{ props: activatorProps }">
+              <v-icon :icon="mdiInformationOutline" v-bind="activatorProps"></v-icon>
+            </template>
+            <AtomChip class="mr-1" color="blue-darken-3" size="x-small">–1 charge (–)</AtomChip>
+            <AtomChip color="deep-purple" size="x-small">–2 charge (2-)</AtomChip>
+          </v-tooltip>
         </AtomChip>
-        <AtomButton v-if="appState.isLoggedIn" color="primary" href="/compound/new" target="_blank">
-          <span class="d-flex d-sm-none">+ New</span>
+
+        <div v-if="!$display.xs && !$display.sm" class="mr-4">
+          (<AtomChip class="mr-1" color="blue-darken-3" size="small">–1 charge (–)</AtomChip>
+          <AtomChip color="deep-purple" size="small">–2 charge (2-)</AtomChip>)
+        </div>
+
+        <AtomButton
+          v-if="appState.isLoggedIn"
+          color="primary"
+          size="large"
+          href="/compound/new"
+          target="_blank"
+          class="mr-1"
+        >
+          <span class="d-flex d-sm-none">New</span>
           <span class="d-none d-sm-flex">+ Add new</span>
         </AtomButton>
 
@@ -400,12 +431,18 @@ onMounted(async () => {
                   "
                   v-model="selectedCompounds"
                   :value="item.raw.id"
-                  class="ma-1"
+                  class="ma-1 compare-checkbox"
                   color="secondary"
-                  style="position: absolute; top: 0; left: 0; z-index: 10"
                 />
-                <v-list lines="two" density="compact">
-                  <v-list-item class="text-center">
+                <v-list lines="two" density="compact" class="pt-0">
+                  <v-list-item
+                    :class="[
+                      'text-center',
+                      item.raw.molecularFormula?.endsWith(')2-')
+                        ? 'bg-deep-purple-lighten-5'
+                        : 'bg-blue-lighten-5',
+                    ]"
+                  >
                     <v-list-item-title>
                       <h3>
                         {{ item.raw.abbr }}
@@ -492,3 +529,19 @@ onMounted(async () => {
     </v-container>
   </v-main>
 </template>
+
+<style lang="scss" scoped>
+.compare-checkbox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
+
+.charges-tooltip {
+  :deep(.v-overlay__content) {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+  }
+}
+</style>
