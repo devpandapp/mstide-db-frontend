@@ -138,7 +138,7 @@ onMounted(async () => {
       <v-form class="mb-4">
         <v-row>
           <v-col cols="12" md="12">
-            <OrganismCompoundMassSpectraSection :massSpectra="massSpectras" />
+            <OrganismCompoundMassSpectraSection :massSpectra="massSpectras" :compare="true" />
           </v-col>
         </v-row>
       </v-form>
@@ -189,7 +189,10 @@ onMounted(async () => {
         </v-row>
         <v-row>
           <v-col cols="12" md="12">
-            <OrganismCompoundMassSpectraSection :massSpectra="[massSpectras[index]]" />
+            <OrganismCompoundMassSpectraSection
+              :massSpectra="[massSpectras[index]]"
+              :compare="false"
+            />
           </v-col>
         </v-row>
         <v-row v-if="index != Object.keys(compounds).length - 1" class="mb-4 mt-6">

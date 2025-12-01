@@ -1,9 +1,9 @@
 <template>
   <v-main>
     <v-container class="pa-6 pa-md-12" fluid>
-      <h2 class="font-weight-bold">About MSTIDE Database 2.0</h2>
+      <h2 class="font-weight-bold text-justify">About MSTIDE Database 2.0</h2>
 
-      <p class="mt-4 mb-6 text-body-1">
+      <p class="mt-4 mb-6 text-body-1 text-justify">
         The MSTIDE Database 2.0 is an extension of a previously developed resource from our
         laboratory, which contains data on more than 150 mononucleotides (<a
           href="http://www.mstide-db.com/"
@@ -17,26 +17,31 @@
 
       <v-row justify="center">
         <v-col cols="12" lg="6" order="2" order-lg="1">
-          <p class="mb-2">
+          <p class="mb-2 text-justify">
             This database was established to complement a research paper focused on the
             fragmentation mechanisms of modified nucleotides:
           </p>
-          <p class="mb-2">
+          <p class="mb-2 text-justify">
             <b>Zhilyaev D, Strzelecka D, Golojuch S, Pandiurin A, Jemielity J, Kowalska J*</b>
             Analysis of biologically and therapeutically relevant di- and trinucleotide analogues by
             tandem mass spectrometry.
           </p>
 
-          <p class="mb-2">
+          <p class="mb-2 text-justify">
             <i
               >*Contact corresponding author: Joanna.Kowalska AT
               <a href="https://www.fuw.edu.pl/" target="_blank">fuw.edu.pl</a></i
             >
           </p>
 
-          <p class="text-medium-emphasis mt-6">
-            The database covers more than 60 nucleotide compounds, each accompanied by corresponding
-            doubly charged MS/MS spectra. For every entry, users can access the parent ion’s
+          <p class="text-medium-emphasis mt-6 text-justify">
+            The MSTIDE Database 2.0 is a repository of negative ion tandem mass spectrometry data
+            for natural nucleotides and their synthetic derivatives. These compounds included
+            numerous biologically and pharmaceutically significant dinucleotides, varying in the
+            type of nitrogenous base, the length of the oligophosphate chain (from mono- to
+            pentaphosphate), and the presence of additional modifications in the phosphate, ribose,
+            or nitrogenous baseresidues. Trinucleotides with various modifications including mRNA
+            cap analogs were represented. For every entry, users can access the parent ion’s
             chemical structure, IUPAC name and abbreviation, detailed measurement conditions, the
             recorded MS/MS spectrum, a numerical list of detected peaks with normalized intensities,
             and a set of proposed chemical structures for identified fragment ions. All fragments
@@ -49,14 +54,14 @@
             the original raw data.
           </p>
 
-          <p class="text-medium-emphasis mt-4">
+          <p class="text-medium-emphasis mt-4 text-justify">
             The database provides multiple search functionalities, including monoisotopic mass
             search, single or multiple m/z peak searches, substructure and structural similarity
             searches, as well as filtering of compounds based on modification(s) present in the
             precursor.
           </p>
 
-          <p class="text-medium-emphasis mt-4">
+          <p class="text-medium-emphasis mt-4 text-justify">
             The database is intended to facilitate detailed analysis of nucleotide fragmentation
             patterns, enabling easier identification of metabolites, synthetic products, fragment
             ions, and nucleotide modifications. The information it contains can support the

@@ -8,11 +8,12 @@ import type { MassTable } from '@/interfaces/MassTable';
 // Props
 const props = defineProps<{
   massSpectra: MassTable[][];
+  compare: boolean;
 }>();
 
 // Data
 const colors = ['#FF9800', '#4CAF50', '#3F51B5', '#9C27B0', '#E91E63']; // orange, green, indigo, purple, pink
-const allPeaks = computed(() => props.massSpectra.flat());
+const allPeaks = computed(() => props.massSpectra.flatMap((e) => e));
 
 // Computed
 const maxIntensity = computed(() => {
@@ -20,13 +21,16 @@ const maxIntensity = computed(() => {
 });
 
 const mzTicks = computed(() => {
+  let visiblePeaks = [];
   if (!allPeaks.value.length) return [];
+  else visiblePeaks = props.compare ? allPeaks.value : allPeaks.value.filter((e) => e.visible);
   const minMz = 0;
-  const maxMz = Math.ceil(Math.max(...allPeaks.value.map((e) => e.mz)) / 50) * 50;
+  const maxMz = Math.ceil(Math.max(...visiblePeaks.map((e) => e.mz)) / 50) * 50;
   const ticks: number[] = [];
   for (let val = minMz; val <= maxMz; val += 50) {
     ticks.push(val);
   }
+
   return ticks;
 });
 </script>
@@ -48,7 +52,7 @@ const mzTicks = computed(() => {
       <div class="peaks">
         <template v-for="(spectrum, sIndex) in props.massSpectra" :key="sIndex">
           <div
-            v-for="(entry, index) in spectrum"
+            v-for="(entry, index) in props.compare ? spectrum : spectrum.filter((e) => e.visible)"
             :key="sIndex + '-' + index"
             class="peak"
             :style="{

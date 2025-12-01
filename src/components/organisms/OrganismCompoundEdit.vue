@@ -172,8 +172,9 @@ const handleMsUpload = async (event: Event) => {
       const [mzStr, intensityStr] = line.trim().split(/\s+/);
       const mz = parseFloat(mzStr);
       const intensity = parseFloat(intensityStr);
+      const visible = true;
       if (!isNaN(mz) && !isNaN(intensity)) {
-        massSpectra.push({ mz, intensity });
+        massSpectra.push({ mz, intensity, visible });
         mzValues.push(mz);
       }
     });
@@ -189,6 +190,10 @@ const handleMsUpload = async (event: Event) => {
 
     form.fragments = uniqueFragments;
   }
+};
+
+const updateMassSpectra = (newValue: MassTable[][]) => {
+  massSpectra.splice(0, massSpectra.length, ...newValue[0]);
 };
 
 // Hoox
@@ -259,7 +264,11 @@ onMounted(async () => {
         />
         <v-row>
           <v-col cols="12" md="12">
-            <OrganismCompoundMassSpectraSection :massSpectra="[massSpectra]" />
+            <OrganismCompoundMassSpectraSection
+              :massSpectra="[massSpectra]"
+              :compare="false"
+              @update:massSpectra="updateMassSpectra"
+            />
           </v-col>
         </v-row>
         <v-row>

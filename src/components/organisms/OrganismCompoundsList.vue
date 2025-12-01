@@ -167,14 +167,14 @@ onMounted(async () => {
             <template v-slot:activator="{ props: activatorProps }">
               <v-icon :icon="mdiInformationOutline" v-bind="activatorProps"></v-icon>
             </template>
-            <AtomChip class="mr-1" color="blue-darken-3" size="x-small">–1 charge (–)</AtomChip>
-            <AtomChip color="deep-purple" size="x-small">–2 charge (2-)</AtomChip>
+            <AtomChip class="mr-1" color="blue-darken-3" size="x-small">1 charge (-)</AtomChip>
+            <AtomChip color="deep-purple" size="x-small">2 charges (2-)</AtomChip>
           </v-tooltip>
         </AtomChip>
 
         <div v-if="!$display.xs && !$display.sm" class="mr-4">
-          (<AtomChip class="mr-1" color="blue-darken-3" size="small">–1 charge (–)</AtomChip>
-          <AtomChip color="deep-purple" size="small">–2 charge (2-)</AtomChip>)
+          (<AtomChip class="mr-1" color="blue-darken-3" size="small">1 charge (-)</AtomChip>
+          <AtomChip color="deep-purple" size="small">2 charges (2-)</AtomChip>)
         </div>
 
         <AtomButton
@@ -431,7 +431,7 @@ onMounted(async () => {
                   "
                   v-model="selectedCompounds"
                   :value="item.raw.id"
-                  class="ma-1 compare-checkbox"
+                  class="compare-checkbox"
                   color="secondary"
                 />
                 <v-list lines="two" density="compact" class="pt-0">
@@ -533,8 +533,7 @@ onMounted(async () => {
 <style lang="scss" scoped>
 .compare-checkbox {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: -8px;
   z-index: 10;
 }
 

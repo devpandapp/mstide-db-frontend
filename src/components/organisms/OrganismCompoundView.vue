@@ -118,7 +118,11 @@ onMounted(async () => {
 
       typeTree.value = Object.values(grouped);
 
-      massSpectra.splice(0, massSpectra.length, ...(data.massTable || []));
+      const massTable = data.massTable || [];
+      massTable.map((i) => {
+        if (i.visible === undefined) i.visible = true;
+      });
+      massSpectra.splice(0, massSpectra.length, ...massTable);
     } catch (err) {
       showAlert('Failed to load compound data.');
     }
@@ -312,7 +316,7 @@ onMounted(async () => {
         </v-row>
         <v-row>
           <v-col cols="12" md="12">
-            <OrganismCompoundMassSpectraSection :massSpectra="[massSpectra]" />
+            <OrganismCompoundMassSpectraSection :massSpectra="[massSpectra]" :compare="false" />
           </v-col>
         </v-row>
         <v-row>
