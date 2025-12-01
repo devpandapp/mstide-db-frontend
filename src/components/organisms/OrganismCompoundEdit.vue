@@ -226,7 +226,11 @@ onMounted(async () => {
       form.sdf = data.sdf || '';
       form.types = data.types || [];
 
-      massSpectra.splice(0, massSpectra.length, ...(data.massTable || []));
+      const massTable = data.massTable || [];
+      massTable.map((i) => {
+        if (i.visible === undefined) i.visible = true;
+      });
+      massSpectra.splice(0, massSpectra.length, ...massTable);
 
       form.fragments = data.fragments || [];
     } catch (err: any) {
