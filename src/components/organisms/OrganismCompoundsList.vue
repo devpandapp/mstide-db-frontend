@@ -165,7 +165,11 @@ onMounted(async () => {
             class="charges-tooltip"
           >
             <template v-slot:activator="{ props: activatorProps }">
-              <v-icon :icon="mdiInformationOutline" v-bind="activatorProps"></v-icon>
+              <v-icon
+                :icon="mdiInformationOutline"
+                v-bind="activatorProps"
+                class="list-info"
+              ></v-icon>
             </template>
             <AtomChip class="mr-1" color="blue-darken-3" size="x-small">1 charge (-)</AtomChip>
             <AtomChip color="deep-purple" size="x-small">2 charges (2-)</AtomChip>
@@ -541,6 +545,14 @@ onMounted(async () => {
   :deep(.v-overlay__content) {
     background-color: #ffffff;
     border: 1px solid #000000;
+  }
+}
+
+.list-info {
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
   }
 }
 </style>

@@ -23,7 +23,7 @@ const maxIntensity = computed(() => {
 const mzTicks = computed(() => {
   let visiblePeaks = [];
   if (!allPeaks.value.length) return [];
-  else visiblePeaks = props.compare ? allPeaks.value : allPeaks.value.filter((e) => e.visible);
+  else visiblePeaks = allPeaks.value;
   const minMz = 0;
   const maxMz = Math.ceil(Math.max(...visiblePeaks.map((e) => e.mz)) / 50) * 50;
   const ticks: number[] = [];
@@ -52,7 +52,7 @@ const mzTicks = computed(() => {
       <div class="peaks">
         <template v-for="(spectrum, sIndex) in props.massSpectra" :key="sIndex">
           <div
-            v-for="(entry, index) in props.compare ? spectrum : spectrum.filter((e) => e.visible)"
+            v-for="(entry, index) in spectrum"
             :key="sIndex + '-' + index"
             class="peak"
             :style="{
@@ -63,7 +63,9 @@ const mzTicks = computed(() => {
             }"
             :title="'m/z: ' + entry.mz + ', Intensity: ' + entry.intensity"
           >
-            <div class="mz-label">{{ entry.mz }}</div>
+            <div v-if="props.compare ? true : entry.visible" class="mz-label">
+              {{ entry.mz }}
+            </div>
           </div>
         </template>
       </div>

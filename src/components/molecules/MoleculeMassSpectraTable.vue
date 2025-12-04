@@ -4,10 +4,11 @@ import { ref, computed, watch } from 'vue';
 import { useRoute } from 'vue-router';
 
 // Modules
-import { mdiEye, mdiEyeOff } from '@mdi/js';
+import { mdiInformationOutline } from '@mdi/js';
 
 // Components
 import { appState } from '@/db/auth.ts';
+import AtomChip from '@/components/atoms/AtomChip.vue';
 
 // Interfaces
 import type { MassTable } from '@/interfaces/MassTable';
@@ -93,6 +94,22 @@ localMassSpectra.value = normalizeSpectra(props.massSpectra);
     <template v-slot:headers>
       <tr>
         <th class="text-center border-sm">
+          <v-tooltip interactive open-on-click>
+            <template v-slot:activator="{ props: activatorProps }">
+              <v-icon
+                :icon="mdiInformationOutline"
+                v-bind="activatorProps"
+                class="info-mass-spec"
+              ></v-icon>
+            </template>
+            <AtomChip color="red-lighten-4" size="x-small">
+              m/z values are hidden on the mass spectrometry chart
+            </AtomChip>
+            <br />
+            <AtomChip color="green-lighten-4" size="x-small">
+              m/z values are shown on the mass spectrometry chart
+            </AtomChip>
+          </v-tooltip>
           <strong><i>m/z</i></strong>
         </th>
         <th
@@ -110,7 +127,6 @@ localMassSpectra.value = normalizeSpectra(props.massSpectra);
           @click="isAvailableForChange ? toggleColumn(index) : null"
         >
           <div class="d-flex flex-column align-center">
-            <v-icon :icon="entry.visible ? mdiEye : mdiEyeOff" />
             {{ entry.mz }}
           </div>
         </th>
@@ -140,3 +156,21 @@ localMassSpectra.value = normalizeSpectra(props.massSpectra);
     </template>
   </v-data-table>
 </template>
+
+<style lang="scss" scoped>
+th,
+td {
+  position: relative;
+
+  .info-mass-spec {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+</style>
